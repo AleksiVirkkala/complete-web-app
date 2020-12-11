@@ -10,5 +10,4 @@ form.addEventListener('submit', e => {
 
 console.log('Hello!');
 console.log('Hello again!');
-console.log('Hello again!');
-console.log('Hello again!');
+throw new Error();
