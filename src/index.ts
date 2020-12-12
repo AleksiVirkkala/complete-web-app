@@ -7,7 +7,3 @@ form.addEventListener('submit', e => {
   const data = formData(form);
   console.log(data);
 });
-
-console.log('Hello!');
-console.log('Hello again!');
-throw new Error();
