@@ -1,5 +1,8 @@
 import * as http from 'http';
 import * as fs from 'fs';
+import _ from 'lodash';
+
+_.random(1, 20);
 
 const server = http.createServer((req, res) => {
   console.log('Request made to:' + req.url);
