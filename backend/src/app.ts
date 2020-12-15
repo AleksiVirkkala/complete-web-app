@@ -5,22 +5,25 @@ import { createServerShutdownHandler, connectDB } from './utils';
 // Express app
 const app = express();
 
-// Database
-connectDB();
-
 // Register view engine
 app.set('view engine', 'ejs');
 
-const hostName = process.env.HOST_NAME!;
-const port = parseInt(process.env.PORT!);
-
-// Listen for requests
-const server = app.listen(port, hostName, () => console.log(`Server running at: http://${hostName}:${port}`));
-const shutdownHandler = createServerShutdownHandler(server);
+(async () => {
+  const hostName = process.env.HOST_NAME!;
+  const port = parseInt(process.env.PORT!);
+  await connectDB();
+  // Listen for requests when db is connected
+  const server = app.listen(port, hostName, () => console.log(`Server running at: http://${hostName}:${port}`));
+  const shutdownHandler = createServerShutdownHandler(server);
+  process.on('SIGINT', shutdownHandler); // Handles ctrl + C exit
+  process.once('SIGUSR2', shutdownHandler); // Handles Nodemon restarts
+})();
 
 // Middleware & static files
 app.use(express.static('../frontend/public'));
 app.use(morgan('dev'));
+
+// Routes
 
 app.get('/', (req, res) => {
   const blogs = [
@@ -43,8 +46,3 @@ app.get('/blogs/create', (req, res) => {
 app.use((req, res) => {
   res.status(404).render('404', { title: '404' });
 });
-
-// Handles ctrl + C exit
-process.on('SIGINT', shutdownHandler);
-// Handles Nodemon restarts
-process.once('SIGUSR2', shutdownHandler);
