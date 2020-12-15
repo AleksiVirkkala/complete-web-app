@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "cd ./backend && npm start",
+    "dev": "concurrently \"cd ./backend && npm run dev\" \"cd ./frontend && npm run watch\"",
+    "build": "cd ./backend && npm run build\" \"cd ./frontend && npm run build\""
   },
   "repository": {
     "type": "git",
@@ -16,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/AleksiVirkkala/complete-web-app/issues"
   },
-  "homepage": "https://github.com/AleksiVirkkala/complete-web-app#readme"
+  "homepage": "https://github.com/AleksiVirkkala/complete-web-app#readme",
+  "devDependencies": {
+    "concurrently": "^5.3.0"
+  }
 }
