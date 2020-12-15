@@ -11,12 +11,13 @@ const port = parseInt(process.env.PORT!);
 const server = app.listen(port, hostName, () => console.log(`Server running at: http://${hostName}:${port}`));
 const shutdownHandler = createServerShutdownHandler(server);
 
-app.get('/html', (req, res) => {
-  res.send('<p>HTML Page</p>');
+app.get('/', (req, res) => {
+  // res.send('<p>Home Page</p>');
+  res.sendFile('public/index.html', { root: __dirname });
 });
 
-app.get('/json', (req, res) => {
-  res.send({ message: 'Hello!' });
+app.get('/about', (req, res) => {
+  res.sendFile('public/about.html', { root: __dirname });
 });
 
 // Handles ctrl + C exit
