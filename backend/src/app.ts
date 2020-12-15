@@ -15,6 +15,8 @@ const port = parseInt(process.env.PORT!);
 const server = app.listen(port, hostName, () => console.log(`Server running at: http://${hostName}:${port}`));
 const shutdownHandler = createServerShutdownHandler(server);
 
+// Middleware & static files
+app.use(express.static('../frontend/public'));
 app.use(morgan('dev'));
 
 app.get('/', (req, res) => {
