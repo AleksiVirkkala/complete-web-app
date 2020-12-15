@@ -24,6 +24,10 @@ app.get('/about', (req, res) => {
 app.get('/about-us', (req, res) => {
   res.redirect('/about');
 });
+// 404 page
+app.use((req, res) => {
+  res.status(404).sendFile('public/404.html', { root: __dirname });
+});
 // Handles ctrl + C exit
 process.on('SIGINT', shutdownHandler);
 // Handles Nodemon restarts
