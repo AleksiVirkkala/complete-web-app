@@ -26,5 +26,6 @@ export function createServerShutdownHandler(server: Server) {
 
 export async function connectDB() {
   const DB_URL = process.env.DB_URL!;
-  await mongoose.connect(DB_URL);
+  await mongoose.connect(DB_URL, { useNewUrlParser: true, useUnifiedTopology: true });
+  console.log('db connected');
 }
