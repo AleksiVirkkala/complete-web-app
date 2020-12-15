@@ -20,6 +20,10 @@ app.get('/about', (req, res) => {
   res.sendFile('public/about.html', { root: __dirname });
 });
 
+// Redirects
+app.get('/about-us', (req, res) => {
+  res.redirect('/about');
+});
 // Handles ctrl + C exit
 process.on('SIGINT', shutdownHandler);
 // Handles Nodemon restarts
