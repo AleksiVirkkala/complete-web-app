@@ -1,4 +1,5 @@
 import express from 'express';
+import morgan from 'morgan';
 import { createServerShutdownHandler } from './utils';
 
 // Express app
@@ -13,6 +14,8 @@ const port = parseInt(process.env.PORT!);
 // Listen for requests
 const server = app.listen(port, hostName, () => console.log(`Server running at: http://${hostName}:${port}`));
 const shutdownHandler = createServerShutdownHandler(server);
+
+app.use(morgan('dev'));
 
 app.get('/', (req, res) => {
   const blogs = [
