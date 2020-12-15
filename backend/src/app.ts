@@ -1,9 +1,12 @@
 import express from 'express';
 import morgan from 'morgan';
-import { createServerShutdownHandler } from './utils';
+import { createServerShutdownHandler, connectDB } from './utils';
 
 // Express app
 const app = express();
+
+// Database
+connectDB();
 
 // Register view engine
 app.set('view engine', 'ejs');
