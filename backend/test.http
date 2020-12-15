@@ -1,0 +1,9 @@
+@hostname = {{$dotenv HOST_NAME}}
+@port = {{$dotenv PORT}}
+@host = {{hostname}}:{{port}}
+@contentType = application/json
+
+###
+
+GET http://{{host}}/json HTTP/1.1
+Content-Type: {{contentType}}
