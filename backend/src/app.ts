@@ -4,6 +4,9 @@ import { createServerShutdownHandler } from './utils';
 // Express app
 const app = express();
 
+// Register view engine
+app.set('view engine', 'ejs');
+
 const hostName = process.env.HOST_NAME!;
 const port = parseInt(process.env.PORT!);
 
@@ -12,8 +15,7 @@ const server = app.listen(port, hostName, () => console.log(`Server running at: 
 const shutdownHandler = createServerShutdownHandler(server);
 
 app.get('/', (req, res) => {
-  // res.send('<p>Home Page</p>');
-  res.sendFile('public/index.html', { root: __dirname });
+  res.render('index');
 });
 
 app.get('/about', (req, res) => {
