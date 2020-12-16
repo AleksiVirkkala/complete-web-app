@@ -1,7 +1,7 @@
 import express from 'express';
 import morgan from 'morgan';
 import { createServerShutdownHandler, connectDB } from './utils';
-import Blog from './models/blog';
+import blogRoutes from './routes/blogRoutes';
 
 // Express app
 const app = express();
@@ -16,37 +16,7 @@ app.use(morgan('dev'));
 
 app.get('/', (req, res) => res.redirect('/blogs'));
 app.get('/about', (req, res) => res.render('about', { title: 'About' }));
-// Blog routes
-app.get('/blogs', async (req, res) => {
-  Blog.find()
-    .sort({ createdAt: -1 })
-    .then(blogs => res.render('index', { title: 'All Blogs', blogs }))
-    .catch(console.log);
-});
-
-app.post('/blogs', (req, res) => {
-  const newBlog = new Blog(req.body);
-  newBlog
-    .save()
-    .then(() => res.redirect('/blogs'))
-    .catch(console.log);
-});
-
-app.get('/blogs/create', (req, res) => res.render('create', { title: 'Create a new Blog' }));
-
-app.get('/blogs/:id', (req, res) => {
-  const id = req.params.id;
-  Blog.findById(id)
-    .then(result => res.render('details', { title: 'Blog Details', blog: result }))
-    .catch(console.log);
-});
-
-app.delete('/blogs/:id', (req, res) => {
-  const id = req.params.id;
-  Blog.findByIdAndDelete(id)
-    .then(() => res.send({ redirect: '/blogs' }))
-    .catch(console.log);
-});
+app.use('/blogs', blogRoutes);
 
 // 404 page
 app.use((req, res) => res.status(404).render('404', { title: '404' }));
