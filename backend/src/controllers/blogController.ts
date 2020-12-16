@@ -5,14 +5,17 @@ const blog_index: RH = (req, res) => {
   Blog.find()
     .sort({ createdAt: -1 })
     .then(blogs => res.render('blogs/index', { title: 'All Blogs', blogs }))
-    .catch(console.log);
+    .catch(() => res.render('404', { title: "Couldn't fetch blogs" }));
 };
 
 const blog_details: RH = (req, res) => {
   const id = req.params.id;
   Blog.findById(id)
-    .then(result => res.render('blogs/details', { title: 'Blog Details', blog: result }))
-    .catch(console.log);
+    .then(result => {
+      if (!result) throw new Error('Blog not found');
+      res.render('blogs/details', { title: 'Blog Details', blog: result });
+    })
+    .catch(() => res.render('404', { title: 'Blog not found' }));
 };
 
 const blog_create_get: RH = (req, res) => res.render('blogs/create', { title: 'Create a new Blog' });
