@@ -27,7 +27,7 @@ function createServerShutdownHandler(server: Server) {
 
 async function connectDB() {
   const DB_URL = process.env.DB_URL!;
-  await mongoose.connect(DB_URL, { useNewUrlParser: true, useUnifiedTopology: true });
+  await mongoose.connect(DB_URL, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true });
   console.log('db connected');
 }
 
