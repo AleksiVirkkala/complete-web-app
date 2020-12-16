@@ -4,27 +4,11 @@
 
 ###
 
-GET http://{{host}}/json HTTP/1.1
+GET http://{{host}}/ HTTP/1.1
 
 ###
 
-POST http://{{host}}/json HTTP/1.1
-
-###
-
-GET http://{{host}}/single-blog HTTP/1.1
-
-###
-
-GET http://{{host}}/all-blogs HTTP/1.1
-
-###
-
-POST http://{{host}}/add-blog HTTP/1.1
-
-###
-
-GET http://{{host}}/html HTTP/1.1
+GET http://{{host}}/blogs HTTP/1.1
 
 ###
 
