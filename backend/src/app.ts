@@ -1,6 +1,7 @@
 import express from 'express';
 import morgan from 'morgan';
 import { createServerShutdownHandler, connectDB } from './utils';
+import Blog from './models/blog';
 
 // Express app
 const app = express();
@@ -12,7 +13,30 @@ app.set('view engine', 'ejs');
 app.use(express.static('../frontend/public'));
 app.use(morgan('dev'));
 
-// Routes
+app.post('/add-blog', (req, res) => {
+  const blog = new Blog({
+    title: 'new blog',
+    snippet: 'about my new blog',
+    body: 'more about my new blog'
+  });
+
+  blog
+    .save()
+    .then(result => res.send(result))
+    .catch(err => console.log(err));
+});
+
+app.get('/all-blogs', (req, res) => {
+  Blog.find()
+    .then(blogs => res.send(blogs))
+    .catch(err => console.log(err));
+});
+
+app.get('/single-blog', (req, res) => {
+  Blog.findById('5fd9eabd7da07b3974c81939')
+    .then(blog => res.send(blog))
+    .catch(err => console.log(err));
+});
 
 app.get('/', (req, res) => {
   const blogs = [
