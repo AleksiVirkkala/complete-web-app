@@ -3,17 +3,20 @@
   <%- include('../partials/head.ejs') %>
   <body>
     <%- include('../partials/nav.ejs') %>
-    <div class="blogs content">
-      <h2>All Blogs</h2>
+    <h2>All Blogs</h2>
+    <ul class="posts">
       <% if (blogs.length > 0) { %> <% blogs.forEach(blog => { %>
-      <a class="single" href="/blogs/<%= blog._id %>">
-        <h3 class="title"><%= blog.title %></h3>
-        <p class="snippet"><%= blog.snippet %></p>
-      </a>
+      <li>
+        <a class="post" href="/blogs/<%= blog._id %>">
+          <img src="/img/post.png" alt="post icon" />
+          <h4><%= blog.title %></h4>
+          <p><%= blog.snippet %></p>
+        </a>
+      </li>
       <% }) %> <% } else { %>
       <div>There are no blogs to display...</div>
       <% } %>
-    </div>
+    </ul>
     <%- include('../partials/footer.ejs') %>
   </body>
 </html>
