@@ -4,18 +4,18 @@ import Blog from '../models/blog';
 const blog_index: RH = (req, res) => {
   Blog.find()
     .sort({ createdAt: -1 })
-    .then(blogs => res.render('index', { title: 'All Blogs', blogs }))
+    .then(blogs => res.render('blogs/index', { title: 'All Blogs', blogs }))
     .catch(console.log);
 };
 
 const blog_details: RH = (req, res) => {
   const id = req.params.id;
   Blog.findById(id)
-    .then(result => res.render('details', { title: 'Blog Details', blog: result }))
+    .then(result => res.render('blogs/details', { title: 'Blog Details', blog: result }))
     .catch(console.log);
 };
 
-const blog_create_get: RH = (req, res) => res.render('create', { title: 'Create a new Blog' });
+const blog_create_get: RH = (req, res) => res.render('blogs/create', { title: 'Create a new Blog' });
 
 const blog_create_post: RH = (req, res) => {
   const newBlog = new Blog(req.body);
