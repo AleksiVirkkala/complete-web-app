@@ -12,6 +12,14 @@ POST http://{{host}}/json HTTP/1.1
 
 ###
 
+GET http://{{host}}/single-blog HTTP/1.1
+
+###
+
+GET http://{{host}}/all-blogs HTTP/1.1
+
+###
+
 POST http://{{host}}/add-blog HTTP/1.1
 
 ###
