@@ -14,7 +14,7 @@ app.use(express.static('../frontend/public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 
-app.get('/', (req, res) => res.redirect('/blogs'));
+app.get('/', (req, res) => res.render('index', { title: 'Home' }));
 app.get('/about', (req, res) => res.render('about', { title: 'About' }));
 app.use('/blogs', blogRoutes);
 
