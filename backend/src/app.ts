@@ -26,29 +26,12 @@ app.post('/add-blog', (req, res) => {
     .catch(err => console.log(err));
 });
 
-app.get('/all-blogs', (req, res) => {
+// Blog routes
+app.get('/blogs', async (req, res) => {
   Blog.find()
-    .then(blogs => res.send(blogs))
+    .sort({ createdAt: -1 })
+    .then(blogs => res.render('index', { title: 'All Blogs', blogs }))
     .catch(err => console.log(err));
-});
-
-app.get('/single-blog', (req, res) => {
-  Blog.findById('5fd9eabd7da07b3974c81939')
-    .then(blog => res.send(blog))
-    .catch(err => console.log(err));
-});
-
-app.get('/', (req, res) => {
-  const blogs = [
-    { title: 'Yoshi finds eggs', snippet: 'Lorem ipsum dolor sit amet consectetur' },
-    { title: 'Mario finds stars', snippet: 'Lorem ipsum dolor sit amet consectetur' },
-    { title: 'How to defeat bowser', snippet: 'Lorem ipsum dolor sit amet consectetur' }
-  ];
-  res.render('index', { title: 'Home', blogs });
-});
-
-app.get('/about', (req, res) => {
-  res.render('about', { title: 'About' });
 });
 
 app.get('/blogs/create', (req, res) => {
