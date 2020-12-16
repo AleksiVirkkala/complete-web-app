@@ -11,11 +11,12 @@ app.set('view engine', 'ejs');
 
 // Middleware & static files
 app.use(express.static('../frontend/public'));
+app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 
 app.get('/', (req, res) => {
   res.redirect('/blogs');
-  });
+});
 
 app.get('/about', (req, res) => {
   res.render('about', { title: 'About' });
@@ -27,6 +28,14 @@ app.get('/blogs', async (req, res) => {
     .sort({ createdAt: -1 })
     .then(blogs => res.render('index', { title: 'All Blogs', blogs }))
     .catch(err => console.log(err));
+});
+
+app.post('/blogs', (req, res) => {
+  const newBlog = new Blog(req.body);
+  newBlog
+    .save()
+    .then(() => res.redirect('/blogs'))
+    .catch(console.log);
 });
 
 app.get('/blogs/create', (req, res) => {
