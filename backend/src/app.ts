@@ -13,17 +13,12 @@ app.set('view engine', 'ejs');
 app.use(express.static('../frontend/public'));
 app.use(morgan('dev'));
 
-app.post('/add-blog', (req, res) => {
-  const blog = new Blog({
-    title: 'new blog',
-    snippet: 'about my new blog',
-    body: 'more about my new blog'
+app.get('/', (req, res) => {
+  res.redirect('/blogs');
   });
 
-  blog
-    .save()
-    .then(result => res.send(result))
-    .catch(err => console.log(err));
+app.get('/about', (req, res) => {
+  res.render('about', { title: 'About' });
 });
 
 // Blog routes
