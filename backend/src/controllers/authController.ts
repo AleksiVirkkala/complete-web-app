@@ -1,6 +1,7 @@
 import { RequestHandler as RH } from 'express';
+import { Error as mongooseError, Types as mongooseTypes } from 'mongoose';
+import jwt from 'jsonwebtoken';
 import User from '../models/user';
-import { Error as mongooseError } from 'mongoose';
 
 // Handle errors
 const formatErrors = (err: Error | { code: number }) => {
@@ -12,16 +13,24 @@ const formatErrors = (err: Error | { code: number }) => {
   }
 };
 
+const createToken = (id: mongooseTypes.ObjectId) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET!, {
+    expiresIn: process.env.JWT_MAX_AGE
+  });
+};
+
 const signup_get: RH = (req, res) => res.render('auth/signup', { title: 'sign up' });
 
 const signup_post: RH = async (req, res) => {
   const { name, email, password }: { [k: string]: string } = req.body;
   try {
     const newUser = await User.create({ name, email, password });
-    res.status(201).json(newUser);
+    const token = createToken(newUser._id);
+    res.cookie('jwt', token, { httpOnly: true, maxAge: parseInt(process.env.JWT_MAX_AGE!) * 1000 });
+    res.status(201).json({ user: newUser._id });
   } catch (err) {
     const errors = formatErrors(err);
-    if (errors) return res.status(400).json(errors);
+    if (errors) return res.status(400).json({ errors });
     return res.status(400).send('error, user not created');
   }
 };
