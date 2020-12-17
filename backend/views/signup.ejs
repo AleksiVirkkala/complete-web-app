@@ -15,5 +15,16 @@
       <button>Sign up</button>
     </form>
     <%- include('partials/footer.ejs') %>
+    <script>
+      const form = document.querySelector('form');
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+        // get values
+        const name = form.name.value;
+        const email = form.email.value;
+        const password = form.password.value;
+        console.table({ name, email, password });
+      });
+    </script>
   </body>
 </html>
