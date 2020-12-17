@@ -1,0 +1,32 @@
+@hostname = {{$dotenv HOST_NAME}}
+@port = {{$dotenv PORT}}
+@host = {{hostname}}:{{port}}
+
+###
+
+GET http://{{host}}/login HTTP/1.1
+
+###
+
+POST http://{{host}}/login HTTP/1.1
+Content-Type: application/json
+
+{
+    "email": "user@test.com",
+    "password": "test"
+}
+
+###
+
+GET http://{{host}}/signup HTTP/1.1
+
+###
+
+POST http://{{host}}/signup HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "aavee",
+    "email": "user@test.com",
+    "password": "test123"
+}
