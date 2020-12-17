@@ -18,12 +18,7 @@ const login_get: RH = (req, res) => res.render('login', { title: 'log in' });
 
 const login_post: RH = async (req, res) => {
   const { email, password }: { [k: string]: string } = req.body;
-  console.table({ email, password });
-
   const matchingUser = await User.findOne({ email, password });
-
-  console.log(matchingUser);
-
   if (matchingUser) res.send(matchingUser);
   else res.send(401);
 };
