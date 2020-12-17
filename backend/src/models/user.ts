@@ -1,5 +1,6 @@
 import { Document, Schema, model, Model } from 'mongoose';
 import validator from 'validator';
+import bcrypt from 'bcrypt';
 
 const userSchema = new Schema({
   name: {
@@ -25,5 +26,12 @@ interface IUser extends Document {
   email: String;
   password: String;
 }
+
+// Always hash passwords before save
+userSchema.pre<IUser>('save', async function (next) {
+  const salt = await bcrypt.genSalt();
+  this.password = await bcrypt.hash(this.password, salt);
+  next();
+});
 
 export default model('User', userSchema) as Model<IUser>;
