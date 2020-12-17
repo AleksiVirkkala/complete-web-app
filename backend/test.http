@@ -12,4 +12,8 @@ GET http://{{host}}/blogs HTTP/1.1
 
 ###
 
+GET http://{{host}}/blogs/create HTTP/1.1
+
+###
+
 GET http://{{host}}/doesnt-exist HTTP/1.1
