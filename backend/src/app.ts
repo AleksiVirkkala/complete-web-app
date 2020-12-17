@@ -1,5 +1,6 @@
 import express from 'express';
 import morgan from 'morgan';
+import cookieParser from 'cookie-parser';
 import { startServer } from './utils';
 import authRoutes from './routes/authRoutes';
 import blogRoutes from './routes/blogRoutes';
@@ -15,6 +16,7 @@ app.use(express.static('../frontend/public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
+app.use(cookieParser());
 
 // Routes
 app.use(authRoutes);
