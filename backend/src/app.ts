@@ -12,6 +12,7 @@ app.set('view engine', 'ejs');
 
 // Middleware & static files
 app.use(express.static('../frontend/public'));
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 
