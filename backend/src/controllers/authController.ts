@@ -5,22 +5,27 @@ const signup_get: RH = (req, res) => res.render('signup', { title: 'sign up' });
 
 const signup_post: RH = async (req, res) => {
   const { name, email, password }: { [k: string]: string } = req.body;
-  const newUser = new User({ name, email, password });
   try {
-    const addedUser = await newUser.save();
-    res.send(addedUser);
+    const newUser = await User.create({ name, email, password });
+    res.status(201).json(newUser);
   } catch (err) {
     console.log(err);
-    res.status(400).send('Bad request!');
+    res.status(400).send('error, user not created');
   }
 };
 
 const login_get: RH = (req, res) => res.render('login', { title: 'log in' });
 
-const login_post: RH = (req, res) => {
+const login_post: RH = async (req, res) => {
   const { email, password }: { [k: string]: string } = req.body;
   console.table({ email, password });
-  res.send({ email, password });
+
+  const matchingUser = await User.findOne({ email, password });
+
+  console.log(matchingUser);
+
+  if (matchingUser) res.send(matchingUser);
+  else res.send(401);
 };
 
 export { signup_get, signup_post, login_get, login_post };
