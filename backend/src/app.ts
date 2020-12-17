@@ -1,6 +1,7 @@
 import express from 'express';
 import morgan from 'morgan';
 import { startServer } from './utils';
+import authRoutes from './routes/authRoutes';
 import blogRoutes from './routes/blogRoutes';
 
 // Express app
@@ -15,6 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 
 // Routes
+app.use(authRoutes);
 app.get('/', (req, res) => res.render('index', { title: 'Home' }));
 app.get('/about', (req, res) => res.render('about', { title: 'About' }));
 app.use('/blogs', blogRoutes);
