@@ -11,9 +11,8 @@ const blog_index: RH = async (req, res) => {
 };
 
 const blog_details: RH = async (req, res) => {
-  const id = req.params.id;
   try {
-    const blog = await Blog.findById(id);
+    const blog = await Blog.findById(req.params.id);
     if (blog) return res.render('blogs/details', { title: 'Blog Details', blog });
     throw new Error('Blog not found');
   } catch {
@@ -35,9 +34,8 @@ const blog_create_post: RH = async (req, res) => {
 };
 
 const blog_delete: RH = async (req, res) => {
-  const id = req.params.id;
   try {
-    await Blog.findByIdAndDelete(id);
+    await Blog.findByIdAndDelete(req.params.id);
     res.send({ redirect: '/blogs' });
   } catch (err) {
     console.error(err);
