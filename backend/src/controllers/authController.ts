@@ -12,7 +12,7 @@ const formatErrors = (err: Error | { code: number }) => {
   }
 };
 
-const signup_get: RH = (req, res) => res.render('signup', { title: 'sign up' });
+const signup_get: RH = (req, res) => res.render('auth/signup', { title: 'sign up' });
 
 const signup_post: RH = async (req, res) => {
   const { name, email, password }: { [k: string]: string } = req.body;
@@ -26,7 +26,7 @@ const signup_post: RH = async (req, res) => {
   }
 };
 
-const login_get: RH = (req, res) => res.render('login', { title: 'log in' });
+const login_get: RH = (req, res) => res.render('auth/login', { title: 'log in' });
 
 const login_post: RH = async (req, res) => {
   const { email, password }: { [k: string]: string } = req.body;

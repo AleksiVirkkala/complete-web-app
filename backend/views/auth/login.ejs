@@ -1,29 +1,26 @@
 <html lang="en">
-  <%- include('partials/head.ejs') %>
+  <%- include('../partials/head.ejs') %>
   <body>
-    <%- include('partials/nav.ejs') %>
+    <%- include('../partials/nav.ejs') %>
     <form action="/signup">
-      <h2>Sign up</h2>
-      <label for="name">Name</label>
-      <input type="text" name="name" required />
+      <h2>Login</h2>
       <label for="email">Email</label>
       <input type="text" name="email" required />
       <div class="email error"></div>
       <label for="password">Password</label>
       <input type="password" name="password" required />
       <div class="password error"></div>
-      <button>Sign up</button>
+      <button>login</button>
     </form>
-    <%- include('partials/footer.ejs') %>
+    <%- include('../partials/footer.ejs') %>
     <script>
       const form = document.querySelector('form');
       form.addEventListener('submit', e => {
         e.preventDefault();
         // get values
-        const name = form.name.value;
         const email = form.email.value;
         const password = form.password.value;
-        console.table({ name, email, password });
+        console.table({ email, password });
       });
     </script>
   </body>
