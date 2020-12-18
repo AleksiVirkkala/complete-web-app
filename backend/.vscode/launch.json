@@ -9,7 +9,7 @@
       "program": "${workspaceFolder}/src/app.ts",
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
-      "runtimeArgs": ["-r", "dotenv/config", "--transpile-only"]
+      "runtimeArgs": ["-r", "tsconfig-paths/register", "-r", "dotenv/config", "--transpile-only"]
     }
   ]
 }
