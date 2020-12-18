@@ -5,12 +5,11 @@
       "name": "debug",
       "type": "node",
       "request": "launch",
-      "args": ["./src/app.ts"],
-      "runtimeArgs": ["--nolazy", "-r", "ts-node/register", "-r", "dotenv/config"],
-      "sourceMaps": true,
-      "cwd": "${workspaceRoot}",
-      "resolveSourceMapLocations": ["${workspaceFolder}/src", "!${workspaceFolder}/node_modules/**"],
-      "protocol": "inspector"
+      "runtimeExecutable": "nodemon",
+      "program": "${workspaceFolder}/src/app.ts",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "runtimeArgs": ["-r", "dotenv/config", "--transpile-only"]
     }
   ]
 }
