@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import * as ac from '../controllers/authController';
+import * as ac from 'controllers/authController';
 
 export default Router()
   .get('/signup', ac.signup_get)

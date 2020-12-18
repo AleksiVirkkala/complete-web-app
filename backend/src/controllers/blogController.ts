@@ -1,5 +1,5 @@
 import { RequestHandler as RH } from 'express';
-import Blog from '../models/blog';
+import Blog from 'models/blog';
 
 const blog_index: RH = async (req, res) => {
   try {

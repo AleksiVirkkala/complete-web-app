@@ -1,7 +1,7 @@
 import { RequestHandler as RH } from 'express';
 import { Error as mongooseError, Types as mongooseTypes } from 'mongoose';
 import jwt from 'jsonwebtoken';
-import User from '../models/user';
+import User from 'models/user';
 
 // Handle errors
 const formatErrors = (err: Error | { code: number }) => {

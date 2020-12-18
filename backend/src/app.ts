@@ -1,9 +1,9 @@
 import express from 'express';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
-import { startServer } from './utils';
-import authRoutes from './routes/authRoutes';
-import blogRoutes from './routes/blogRoutes';
+import { startServer } from 'utils';
+import authRoutes from 'routes/authRoutes';
+import blogRoutes from 'routes/blogRoutes';
 
 // Express app
 const app = express();

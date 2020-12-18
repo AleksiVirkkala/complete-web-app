@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import * as bc from '../controllers/blogController';
+import * as bc from 'controllers/blogController';
 
 export default Router()
   .get('/', bc.blog_index)
