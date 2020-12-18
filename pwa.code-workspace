@@ -23,6 +23,9 @@
       "node_modules": true,
       "package-lock.json": true,
       "dist": true
+    },
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true
     }
   }
 }
