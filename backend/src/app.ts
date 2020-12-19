@@ -25,8 +25,8 @@ app
 
 // Routes
 app
-  .use(authRoutes)
   .get('*', checkUser)
+  .use(authRoutes)
   .get('/', (req, res) => res.render('index', { title: 'Home' }))
   .get('/about', (req, res) => res.render('about', { title: 'About' }))
   .use('/blogs', requireAuth, blogRoutes)

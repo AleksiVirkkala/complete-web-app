@@ -1,10 +1,16 @@
 <nav>
   <h1><a href="/">AV Blogs</a></h1>
   <ul>
+    <% if (user !== null) { %> 
+      <li class="greeting">Welcome, <%= user.name %></li>
+    <% } %> 
     <li><a href="/about">About</a></li>
-    <li><a href="/blogs/create">New Post</a></li>
-    <li><a href="/logout">Log out</a></li>
-    <li><a href="/login">Log in</a></li>
-    <li><a href="/signup" class="btn">Sign up</a></li>
+    <% if (user !== null) { %> 
+      <li><a href="/blogs/create">New Post</a></li>
+      <li><a href="/logout">Log out</a></li>
+    <% } else { %> 
+      <li><a href="/login">Log in</a></li>
+      <li><a href="/signup" class="btn">Sign up</a></li>
+    <% } %> 
   </ul>
 </nav>
