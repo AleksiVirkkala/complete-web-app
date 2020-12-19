@@ -39,10 +39,11 @@ const signup_post: RH = async (req, res) => {
 const login_get: RH = (req, res) => res.render('auth/login', { title: 'log in' });
 
 const login_post: RH = async (req, res) => {
-  const { email } = req.body;
+  const { email, password } = req.body;
   const matchingUser = await User.findOne({ email });
   if (!matchingUser) return res.status(404).send('user not found');
-  else res.send(401);
+  if (!(await matchingUser.passwordEquals(password))) return res.send(401);
+  res.send('Passwords match!');
 };
 
 export { signup_get, signup_post, login_get, login_post };

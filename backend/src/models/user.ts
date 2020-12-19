@@ -39,4 +39,8 @@ userSchema.pre<UserDocument>('save', async function (next) {
   next();
 });
 
+userSchema.methods.passwordEquals = async function (this: UserDocument, password: string) {
+  return await bcrypt.compare(password, this.password);
+};
+
 export default model<UserDocument, UserModel>('User', userSchema);
