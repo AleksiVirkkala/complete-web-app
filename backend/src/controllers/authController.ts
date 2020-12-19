@@ -1,16 +1,31 @@
 import type { RequestHandler as RH } from 'express';
 import { Error as mongooseError, Types as mongooseTypes } from 'mongoose';
+import { MongoError } from 'mongodb';
 import jwt from 'jsonwebtoken';
 import User from 'models/user';
 
 // Handle errors
-const formatErrors = (err: Error | { code: number }) => {
-  if ('code' in err && err.code === 11000) return { email: 'email is already registered' };
+const formatErrors = (err: unknown) => {
+  // Unknown error that shouldn't be handled
+  if (!(err instanceof Error)) throw err;
+
+  // Duplicate key error
+  if (err instanceof MongoError && err.code === 11000) return { email: 'email is already registered' };
+
+  // Mongoose validation related errors
   if (err instanceof mongooseError.ValidationError) {
     const errorEntries = Object.entries(err.errors);
     const mappedEntries = errorEntries.map(([path, error]): [string, string] => [path, error.message]);
     return Object.fromEntries(mappedEntries);
+  } else {
+    switch (err.message) {
+      case 'incorrect email':
+        return { email: err.message };
+      case 'incorrect password':
+        return { password: err.message };
+    }
   }
+  throw err; // Re-throwing if none of above handlers match
 };
 
 const createToken = (id: mongooseTypes.ObjectId) => {
@@ -29,10 +44,9 @@ const signup_post: RH = async (req, res) => {
     const token = createToken(newUser._id);
     res.cookie('jwt', token, { httpOnly: true, maxAge: parseInt(process.env.JWT_MAX_AGE) * 1000 });
     res.status(201).json({ user: newUser._id });
-  } catch (err) {
+  } catch (err: unknown) {
     const errors = formatErrors(err);
-    if (errors) return res.status(400).json({ errors });
-    return res.status(400).send('error, user not created');
+    return res.status(400).json({ errors });
   }
 };
 
@@ -46,17 +60,9 @@ const login_post: RH = async (req, res) => {
     const token = createToken(user._id);
     res.cookie('jwt', token, { httpOnly: true, maxAge: parseInt(process.env.JWT_MAX_AGE) * 1000 });
     return res.json({ user: user._id });
-  } catch (err) {
-    if (err instanceof Error) {
-      switch (err.message) {
-        case 'incorrect email':
-          return res.status(400).send({ errors: { email: err.message } });
-        case 'incorrect password':
-          return res.status(401).send({ errors: { password: err.message } });
-        default:
-          return res.status(400).send({ errors: { password: 'login failed' } });
-      }
-    }
+  } catch (err: unknown) {
+    const errors = formatErrors(err);
+    res.status(400).json({ errors });
   }
 };
 
