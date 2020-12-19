@@ -54,7 +54,7 @@ const handleLoggingTamperedJWT = async (error: Error, request: import('express')
   console.warn('\x1b[41m\x1b[30m%s\x1b[0m', 'POTENTIALLY TAMPERED JWT TOKEN DETECTED');
   console.table(error);
   try {
-    await RequestLog.create({ request, error, message: 'TAMPERED TOKEN DETECTED' });
+    await RequestLog.create({ request, error, message: 'POTENTIALLY TAMPERED JWT TOKEN DETECTED' });
     console.log('db record added');
   } catch (err) {
     console.log(err);
@@ -81,6 +81,7 @@ const requireAuth: RH = async (req, res, next) => {
     case 'decoded':
       return next();
   }
+  console.log(`clearing jwt cookie. Reason: request token seems to be ${result.type}`);
   return res.clearCookie('jwt').redirect('/login');
 };
 
@@ -105,6 +106,7 @@ const checkUser: RH = async (req, res, next) => {
       res.locals.user = user;
       return next();
   }
+  console.log(`clearing jwt cookie. Reason: request token seems to be ${result.type}`);
   return res.clearCookie('jwt').redirect('/login');
 };
 

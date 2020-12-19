@@ -8,7 +8,9 @@ const requestLogSchema = new Schema(
     request: {
       type: Object,
       required: true,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       set: (v: any) => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { res, client, socket, ...rest } = v;
         return rest;
       }

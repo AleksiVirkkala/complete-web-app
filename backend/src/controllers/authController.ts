@@ -67,6 +67,7 @@ const login_post: RH = async (req, res) => {
 };
 
 const logout_get: RH = (req, res) => {
+  console.log('clearing jwt cookie. reason: Logout');
   res.clearCookie('jwt').redirect('/');
 };
 
