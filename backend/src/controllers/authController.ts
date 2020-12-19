@@ -40,10 +40,24 @@ const login_get: RH = (req, res) => res.render('auth/login', { title: 'log in' }
 
 const login_post: RH = async (req, res) => {
   const { email, password } = req.body;
-  const matchingUser = await User.findOne({ email });
-  if (!matchingUser) return res.status(404).send('user not found');
-  if (!(await matchingUser.passwordEquals(password))) return res.send(401);
-  res.send('Passwords match!');
+
+  try {
+    const user = await User.login(email, password);
+    const token = createToken(user._id);
+    res.cookie('jwt', token, { httpOnly: true, maxAge: parseInt(process.env.JWT_MAX_AGE) * 1000 });
+    return res.json({ user: user._id });
+  } catch (err) {
+    if (err instanceof Error) {
+      switch (err.message) {
+        case 'incorrect email':
+          return res.status(400).send({ errors: { email: err.message } });
+        case 'incorrect password':
+          return res.status(401).send({ errors: { password: err.message } });
+        default:
+          return res.status(400).send({ errors: { password: 'login failed' } });
+      }
+    }
+  }
 };
 
 export { signup_get, signup_post, login_get, login_post };
