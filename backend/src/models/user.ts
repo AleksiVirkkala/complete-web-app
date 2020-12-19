@@ -30,7 +30,20 @@ export interface User {
 export interface UserDocument extends User, Document {
   passwordEquals(password: string): Promise<boolean>;
 }
-export type UserModel = Model<UserDocument>;
+export interface UserModel extends Model<UserDocument> {
+  login(email: string, password: string): Promise<UserDocument>;
+}
+
+userSchema.statics.login = async function (this: UserModel, email: string, password: string) {
+  // Could be cleaner but this way we can be 100% sure that we're not granting access for unauthorized
+  const matchingUser = await this.findOne({ email });
+  if (matchingUser) {
+    const correctPassword = await matchingUser.passwordEquals(password);
+    if (correctPassword) return matchingUser;
+    throw new Error('incorrect password');
+  }
+  throw new Error('incorrect email');
+};
 
 // Always hash passwords before save
 userSchema.pre<UserDocument>('save', async function (next) {
