@@ -1,4 +1,4 @@
-import { RequestHandler as RH } from 'express';
+import type { RequestHandler as RH } from 'express';
 import { Error as mongooseError, Types as mongooseTypes } from 'mongoose';
 import jwt from 'jsonwebtoken';
 import User from 'models/user';
@@ -14,7 +14,7 @@ const formatErrors = (err: Error | { code: number }) => {
 };
 
 const createToken = (id: mongooseTypes.ObjectId) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET!, {
+  return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_MAX_AGE
   });
 };
@@ -22,11 +22,12 @@ const createToken = (id: mongooseTypes.ObjectId) => {
 const signup_get: RH = (req, res) => res.render('auth/signup', { title: 'sign up' });
 
 const signup_post: RH = async (req, res) => {
-  const { name, email, password }: { [k: string]: string } = req.body;
+  const { name, email, password }: { name: string; email: string; password: string } = req.body;
+
   try {
     const newUser = await User.create({ name, email, password });
     const token = createToken(newUser._id);
-    res.cookie('jwt', token, { httpOnly: true, maxAge: parseInt(process.env.JWT_MAX_AGE!) * 1000 });
+    res.cookie('jwt', token, { httpOnly: true, maxAge: parseInt(process.env.JWT_MAX_AGE) * 1000 });
     res.status(201).json({ user: newUser._id });
   } catch (err) {
     const errors = formatErrors(err);
@@ -38,9 +39,9 @@ const signup_post: RH = async (req, res) => {
 const login_get: RH = (req, res) => res.render('auth/login', { title: 'log in' });
 
 const login_post: RH = async (req, res) => {
-  const { email, password }: { [k: string]: string } = req.body;
-  const matchingUser = await User.findOne({ email, password });
-  if (matchingUser) res.send(matchingUser);
+  const { email } = req.body;
+  const matchingUser = await User.findOne({ email });
+  if (!matchingUser) return res.status(404).send('user not found');
   else res.send(401);
 };
 

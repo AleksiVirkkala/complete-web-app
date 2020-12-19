@@ -1,4 +1,4 @@
-import { RequestHandler as RH } from 'express';
+import type { RequestHandler as RH } from 'express';
 import Blog from 'models/blog';
 
 const blog_index: RH = async (req, res) => {
@@ -30,7 +30,6 @@ const blog_create_post: RH = async (req, res) => {
     console.error(err);
     res.status(400).send('error, blog not created');
   }
-  const newBlog = new Blog(req.body);
 };
 
 const blog_delete: RH = async (req, res) => {

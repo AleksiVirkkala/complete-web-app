@@ -19,9 +19,9 @@ const blogSchema = new Schema(
 );
 
 interface IBlog extends Document {
-  title: String;
-  snippet: String;
-  body: String;
+  title: string;
+  snippet: string;
+  body: string;
 }
 
 export default model('Blog', blogSchema) as Model<IBlog>;

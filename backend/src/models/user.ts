@@ -22,9 +22,9 @@ const userSchema = new Schema({
 });
 
 interface IUser extends Document {
-  name: String;
-  email: String;
-  password: String;
+  name: string;
+  email: string;
+  password: string;
 }
 
 // Always hash passwords before save

@@ -26,18 +26,19 @@ function createServerShutdownHandler(server: Server) {
 }
 
 async function connectDB() {
-  const DB_URL = process.env.DB_URL!;
+  const DB_URL = process.env.DB_URL;
   await mongoose.connect(DB_URL, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true });
   console.log('db connected');
 }
 
-export async function startServer(app: Express) {
-  const hostName = process.env.HOST_NAME!;
-  const port = parseInt(process.env.PORT!);
+export async function startServer(app: Express): Promise<Server> {
+  const hostName = process.env.HOST_NAME;
+  const port = parseInt(process.env.PORT);
   await connectDB();
   // Listen for requests once db is connected
   const server = app.listen(port, hostName, () => console.log(`Server running at: http://${hostName}:${port}`));
   const shutdownHandler = createServerShutdownHandler(server);
   process.on('SIGINT', shutdownHandler); // Handles ctrl + C exit
   process.once('SIGUSR2', shutdownHandler); // Handles Nodemon restarts
+  return server;
 }
