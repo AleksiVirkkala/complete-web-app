@@ -21,17 +21,22 @@ const userSchema = new Schema({
   }
 });
 
-interface IUser extends Document {
+export interface User {
   name: string;
   email: string;
   password: string;
 }
 
+export interface UserDocument extends User, Document {
+  passwordEquals(password: string): Promise<boolean>;
+}
+export type UserModel = Model<UserDocument>;
+
 // Always hash passwords before save
-userSchema.pre<IUser>('save', async function (next) {
+userSchema.pre<UserDocument>('save', async function (next) {
   const salt = await bcrypt.genSalt();
   this.password = await bcrypt.hash(this.password, salt);
   next();
 });
 
-export default model('User', userSchema) as Model<IUser>;
+export default model<UserDocument, UserModel>('User', userSchema);

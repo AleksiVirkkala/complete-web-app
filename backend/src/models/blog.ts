@@ -18,10 +18,13 @@ const blogSchema = new Schema(
   { timestamps: true }
 );
 
-interface IBlog extends Document {
+export interface Blog {
   title: string;
   snippet: string;
   body: string;
 }
 
-export default model('Blog', blogSchema) as Model<IBlog>;
+export interface BlogDocument extends Blog, Document {}
+export type BlogModel = Model<BlogDocument>;
+
+export default model<BlogDocument, BlogModel>('Blog', blogSchema);
