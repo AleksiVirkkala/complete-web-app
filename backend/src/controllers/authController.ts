@@ -66,4 +66,8 @@ const login_post: RH = async (req, res) => {
   }
 };
 
-export { signup_get, signup_post, login_get, login_post };
+const logout_get: RH = (req, res) => {
+  res.clearCookie('jwt').redirect('/');
+};
+
+export { signup_get, signup_post, login_get, login_post, logout_get };
