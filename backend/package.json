@@ -2,11 +2,11 @@
   "name": "web-app-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/app.js",
+  "main": "dist/index.js",
   "scripts": {
-    "start": "node -r tsconfig-paths/register -r dotenv/config dist/app.js",
+    "start": "node -r tsconfig-paths/register dist/app.js",
     "build": "tsc",
-    "dev": "nodemon -r tsconfig-paths/register -r dotenv/config src/app.ts"
+    "dev": "nodemon src/index.ts"
   },
   "keywords": [],
   "author": "",
