@@ -1,11 +1,11 @@
-const CACHE_NAME = 'site-static';
+const CACHE_NAME = 'site-static-v3';
 const ASSETS = [
   '/',
   '/about',
-  '/blogs',
   '/signup',
   '/login',
   '/logout',
+  '/blogs',
   '/blogs/create',
   '/js/app.js',
   '/css/styles.css',
@@ -25,10 +25,24 @@ self.addEventListener('install', e => {
 
 // activate service worker
 self.addEventListener('activate', e => {
+  e.waitUntil(
+    caches.keys().then(keys => {
+      console.log(keys);
+      return Promise.all(keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key)));
+    })
+  );
   console.log('service worker has been activated');
 });
 
 // fetch event
 self.addEventListener('fetch', e => {
   console.log('fetch event');
+  e.respondWith(
+    caches.match(e.request).then(cacheRes => {
+      console.log('in match');
+      console.log(e);
+      console.log(cacheRes);
+      return cacheRes && !cacheRes.redirected ? cacheRes : fetch(e.request);
+    })
+  );
 });
