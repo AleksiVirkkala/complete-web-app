@@ -1,5 +1,7 @@
-const STATIC_CACHE = 'site-static-v2';
-const DYNAMIC_CACHE = 'dynamic-static-v2';
+const STATIC_CACHE = 'site-static-v1';
+const DYNAMIC_CACHE = 'dynamic-static-v1';
+const CACHE_SIZE_LIMIT = 15;
+
 const ASSETS = [
   '/',
   '/about',
@@ -14,6 +16,16 @@ const ASSETS = [
   '/img/trashcan.svg',
   '/fallback'
 ];
+
+// cache size limit function
+const limitCacheSize = (name, size) => {
+  caches.open(name).then(cache => {
+    cache.keys().then(keys => {
+      if (keys.length > size) cache.delete(keys[0]).then(() => limitCacheSize(name, size));
+    });
+  });
+};
+
 // install service worker
 self.addEventListener('install', e => {
   console.log('service worker has been installed');
@@ -52,6 +64,7 @@ self.addEventListener('fetch', e => {
             .then(fetchRes => {
               return caches.open(DYNAMIC_CACHE).then(cache => {
                 cache.put(e.request.url, fetchRes.clone());
+                limitCacheSize(DYNAMIC_CACHE, CACHE_SIZE_LIMIT);
                 return fetchRes;
               });
             })
