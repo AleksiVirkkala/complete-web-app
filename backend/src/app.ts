@@ -32,4 +32,7 @@ app
   .use('/blogs', requireAuth, blogRoutes)
   .use((req, res) => res.status(404).render('404', { title: '404' })); // 404 page
 
-startServer(app);
+const init = startServer.bind(this, app);
+
+export { app, startServer };
+export default init;

@@ -33,7 +33,7 @@ async function connectDB() {
 
 export async function startServer(app: Express): Promise<Server> {
   const hostName = process.env.HOST_NAME;
-  const port = parseInt(process.env.PORT);
+  const port = +process.env.PORT;
   await connectDB();
   // Listen for requests once db is connected
   const server = app.listen(port, hostName, () => console.log(`Server running at: http://${hostName}:${port}`));
