@@ -6,10 +6,9 @@
       "type": "node",
       "request": "launch",
       "runtimeExecutable": "nodemon",
-      "program": "${workspaceFolder}/src/app.ts",
+      "program": "${workspaceFolder}/src/index.ts",
       "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen",
-      "runtimeArgs": ["-r", "tsconfig-paths/register", "-r", "dotenv/config", "--transpile-only"]
+      "internalConsoleOptions": "neverOpen"
     }
   ]
 }
