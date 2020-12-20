@@ -1,5 +1,5 @@
-const STATIC_CACHE = 'site-static-v1';
-const DYNAMIC_CACHE = 'dynamic-static-v1';
+const STATIC_CACHE = 'site-static-v2';
+const DYNAMIC_CACHE = 'dynamic-static-v2';
 const ASSETS = [
   '/',
   '/about',
@@ -11,7 +11,8 @@ const ASSETS = [
   '/js/app.js',
   '/css/styles.css',
   '/img/post.png',
-  '/img/trashcan.svg'
+  '/img/trashcan.svg',
+  '/fallback'
 ];
 // install service worker
 self.addEventListener('install', e => {
@@ -29,7 +30,9 @@ self.addEventListener('activate', e => {
   e.waitUntil(
     caches.keys().then(keys => {
       console.log(keys);
-      return Promise.all(keys.filter(key => key !== STATIC_CACHE).map(key => caches.delete(key)));
+      return Promise.all(
+        keys.filter(key => key !== STATIC_CACHE && key !== DYNAMIC_CACHE).map(key => caches.delete(key))
+      );
     })
   );
   console.log('service worker has been activated');
@@ -45,12 +48,14 @@ self.addEventListener('fetch', e => {
       console.log(cacheRes);
       return cacheRes && !cacheRes.redirected
         ? cacheRes
-        : fetch(e.request).then(fetchRes => {
-            return caches.open(DYNAMIC_CACHE).then(cache => {
-              cache.put(e.request.url, fetchRes.clone());
-              return fetchRes;
-            });
-          });
+        : fetch(e.request)
+            .then(fetchRes => {
+              return caches.open(DYNAMIC_CACHE).then(cache => {
+                cache.put(e.request.url, fetchRes.clone());
+                return fetchRes;
+              });
+            })
+            .catch(() => caches.match('/fallback'));
     })
   );
 });

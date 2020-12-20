@@ -29,6 +29,7 @@ app
   .use(authRoutes)
   .get('/', (req, res) => res.render('index', { title: 'Home' }))
   .get('/about', (req, res) => res.render('about', { title: 'About' }))
+  .get('/fallback', (req, res) => res.render('offlinefallback', { title: 'Not available' }))
   .use('/blogs', requireAuth, blogRoutes)
   .use((req, res) => res.status(404).render('404', { title: '404' })); // 404 page
 
